@@ -38,7 +38,7 @@ RUN \
     git clone https://github.com/miyukic/dotfiles.git && \
     cd dotfiles && \
     echo -e "\n" | /bin/bash ./vim_vimrc_unix.sh && \
-    /bin/bash ./bash/setup.sh && \
+    /bin/bash ./bash/set-bashrc.sh && \
     /bin/bash ./Git/gitinit.sh
 
 
