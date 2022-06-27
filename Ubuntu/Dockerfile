@@ -1,5 +1,5 @@
-#docker build --build-arg PASSWD=pass -t rlr01/MiyukiUbuntu:22.04 .
-#docker run -P -d --name 任意のコンテナ名 MiyukiUbuntu:22.04
+#docker build . --build-arg PASSWD=pass -t rlr01/miyukiubuntu:22.04
+#docker run -P -d --name 任意のコンテナ名 miyukiubuntu:22.04
 
 FROM ubuntu:22.04
 
@@ -18,7 +18,7 @@ RUN \
 RUN useradd -m yumeno
 # ルート権限を付与
 RUN gpasswd -a yumeno sudo
-# パスワードはpassに設定
+# パスワードは${PASSWD}に設定
 RUN echo 'yumeno:${PASSWD}' | chpasswd
 # sshログイン時のシェルをbashに設定
 RUN sudo sed -i 's/yumeno:x:1000:1000::\/home\/yumeno:\/bin\/sh/yumeno:x:1000:1000::\/home\/yumeno:\/bin\/bash/g' /etc/passwd
