@@ -1,4 +1,4 @@
-#docker build --build-arg PASSWD=pass -t MiyukiUbuntu:22.04 .
+#docker build --build-arg PASSWD=pass -t rlr01/MiyukiUbuntu:22.04 .
 #docker run -P -d --name 任意のコンテナ名 MiyukiUbuntu:22.04
 
 FROM ubuntu:22.04
