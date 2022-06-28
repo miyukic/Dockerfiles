@@ -59,7 +59,7 @@ RUN \
     cd /home/yumeno && \
     git clone https://github.com/miyukic/dotfiles.git && \
     cd dotfiles && \
-    /bin/bash ./bootstrap.sh
+    /bin/bash ./bootstrap.sh auto
 
 
 EXPOSE 22

@@ -14,33 +14,14 @@ RUN \
     apt install -y software-properties-common && \
     apt install -y curl git man unzip vim wget sudo less net-tools
 
-# rootだと色々と不便なので，ユーザーを作成
+# ユーザー作成
 RUN useradd -m yumeno
-# ルート権限を付与
+# sudoグループに追加
 RUN gpasswd -a yumeno sudo
 # パスワードは${PASSWD}に設定
-RUN echo 'yumeno:${PASSWD}' | chpasswd
+RUN echo "yumeno:pass" | chpasswd
 # sshログイン時のシェルをbashに設定
 RUN sudo sed -i 's/yumeno:x:1000:1000::\/home\/yumeno:\/bin\/sh/yumeno:x:1000:1000::\/home\/yumeno:\/bin\/bash/g' /etc/passwd
-
-# 日本語化
-RUN \
-    apt -y install language-pack-ja && \
-    update-locale LANG=ja_JP.UTF8
-
-# gitの<CR>がエラー制御文字として^Mになるのを抑制
-RUN \
-    git config --global core.whitespace cr-at-eol
-
-# dotfiles
-RUN \
-    cd /home/yumeno && \
-    git clone https://github.com/miyukic/dotfiles.git && \
-    cd dotfiles && \
-    echo -e "\n" | /bin/bash ./vim_vimrc_unix.sh && \
-    /bin/bash ./bash/set-bashrc.sh && \
-    /bin/bash ./Git/gitinit.sh
-
 
 # sshするための設定
 RUN apt install -y openssh-server
@@ -57,6 +38,25 @@ RUN echo "export VISIBLE=now" >> /etc/profile
 #RUN mkdir ~/.ssh && \
 #    mv ~/authorized_keys ~/.ssh/authorized_keys && \
 #    chmod 0600 ~/.ssh/authorized_keys
+
+# 日本語化
+RUN \
+    apt -y install language-pack-ja && \
+    #日本語マニュアル
+    apt -y install manpages-ja manpages-ja-dev && \
+    update-locale LANG=ja_JP.UTF8
+
+# gitの<CR>がエラー制御文字として^Mになるのを抑制
+RUN \
+    git config --global core.whitespace cr-at-eol
+
+# dotfiles
+RUN \
+    cd /home/yumeno && \
+    git clone https://github.com/miyukic/dotfiles.git && \
+    cd dotfiles && \
+    /bin/bash ./bootstrap.sh auto
+
 
 EXPOSE 22
 CMD ["/usr/sbin/sshd", "-D"]
