@@ -12,7 +12,10 @@ RUN \
     apt -y upgrade && \
     apt install -y build-essential && \
     apt install -y software-properties-common && \
-    apt install -y curl git man unzip vim wget sudo less net-tools
+    apt install -y curl git man unzip vim wget sudo less net-tools iputils-ping
+
+# 最小構成を解除
+#RUN y | unminimize
 
 # ユーザー作成
 RUN useradd -m yumeno
@@ -39,6 +42,7 @@ RUN echo "export VISIBLE=now" >> /etc/profile
 #    mv ~/authorized_keys ~/.ssh/authorized_keys && \
 #    chmod 0600 ~/.ssh/authorized_keys
 
+
 # 日本語化
 RUN \
     apt -y install language-pack-ja && \
@@ -53,7 +57,8 @@ RUN \
 # dotfiles
 RUN \
     cd /home/yumeno && \
-    git clone https://github.com/miyukic/dotfiles.git && \
+    git clone https://github.com/miyukic/dotfiles.git dotfiles && \
+    find ./dotfiles | xargs chown yumeno:yumeno && \
     cd dotfiles && \
     /bin/bash ./bootstrap.sh auto
 

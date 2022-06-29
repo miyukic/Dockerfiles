@@ -16,7 +16,7 @@ ENV TZ=Asia/Tokyo
 RUN \
     apt install -y build-essential && \
     apt install -y software-properties-common && \
-    apt install -y curl git man unzip vim wget sudo less net-tools
+    apt install -y curl git man unzip vim wget sudo less net-tools iputils-ping
 
 # ユーザー作成
 RUN useradd -m yumeno
@@ -57,7 +57,8 @@ RUN \
 # dotfiles
 RUN \
     cd /home/yumeno && \
-    git clone https://github.com/miyukic/dotfiles.git && \
+    git clone https://github.com/miyukic/dotfiles.git dotfiles && \
+    find ./dotfiles | xargs chown yumeno:yumeno && \
     cd dotfiles && \
     /bin/bash ./bootstrap.sh auto
 
