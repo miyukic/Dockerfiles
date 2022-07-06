@@ -15,5 +15,5 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-    - ./Ubuntu/Ubuntu22.04/build.sh
+    - run: ./Ubuntu/Ubuntu22.04/build.sh
 #run: ./Ubuntu/Ubuntu22.04 --file Dockerfile --tag my-image-name:$(date +%s)
