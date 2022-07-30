@@ -1,0 +1,32 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "master" ]
+#    paths-ignore:
+    # 他のファイルも含めて変更があった場合はactionが動作してしまうので、
+    # 以下がdocker buildの対象にならないようにstepsでチェックする
+#    - '.github/**'
+#    - 'README.md'
+jobs:
+  build:
+#    strategy:
+#      matrix:
+#        arch: [x86, arm]
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - id: file_changes
+      # changed filesをリスト化してくれるモジュール
+      uses: trilom/file-changes-action@v1.2.4
+      with:
+        # パイプ処理したいため、changed filesリストを改行区切りにする
+        output: '\n'
+    
+    - name: Debug Log
+      run: |
+        echo -e "${{ steps.file_changes.outputs.files }}"
+    #- name: Build the Docker image
+    #  run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
